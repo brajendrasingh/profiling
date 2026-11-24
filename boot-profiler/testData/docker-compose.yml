@@ -1,0 +1,38 @@
+services:
+  boot-profiler:
+    image: boot-profiler:1.0
+    build:
+      context: ./../
+      dockerfile: Dockerfile
+    container_name: boot-profiler
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "127.0.0.1:9010:9010"
+    mem_limit: 300m
+    environment:
+      JAVA_TOOL_OPTIONS: >-
+        -Xms64m
+        -Xmx180m
+        -XX:+HeapDumpOnOutOfMemoryError
+        -XX:HeapDumpPath=/dumps
+        -Dcom.sun.management.jmxremote
+        -Dcom.sun.management.jmxremote.port=9010
+        -Dcom.sun.management.jmxremote.rmi.port=9010
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.ssl=false
+        -Djava.rmi.server.hostname=127.0.0.1
+    volumes:
+      - ./dumps:/dumps
+    networks:
+      - profiler-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  profiler-data:
+
+networks:
+  profiler-network:
+    external: true
+    
