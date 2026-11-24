@@ -2,6 +2,7 @@ package com.bs.profiling.service;
 
 import com.bs.profiling.dto.Employee;
 import com.bs.profiling.entities.EmployeeEntity;
+import com.bs.profiling.memoryLeak.MemoryLeakService;
 import com.bs.profiling.repository.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -16,13 +17,13 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class EmployeeService {
-    // Static collection: remains reachable for the lifetime of the class and typically the application.
-    private static final List<byte[]> memoryLeakList = new ArrayList<>();//For Memory leak
 
     private EmployeeRepository employeeRepository;
+    private MemoryLeakService memoryLeakService;
 
-    public EmployeeService(EmployeeRepository employeeRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository, MemoryLeakService memoryLeakService) {
         this.employeeRepository = employeeRepository;
+        this.memoryLeakService = memoryLeakService;
     }
 
     public Employee saveEmployee(Employee employee) {
@@ -112,9 +113,7 @@ public class EmployeeService {
 
     // Entity to -> DTO
     private Employee mapToDTO(EmployeeEntity entity) {
-        System.out.println("Objects retained by memoryLeakList: " + memoryLeakList.size());
-        memoryLeakList.add(new byte[1024 * 1024]); //For creating memory leak: list is static & keeps growing.
-
+        memoryLeakService.createMemoryLeak();
         return Employee.builder().id(entity.getId())
                 .name(entity.getName())
                 .email(entity.getEmail())
