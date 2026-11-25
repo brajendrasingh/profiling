@@ -113,7 +113,7 @@ public class EmployeeService {
 
     // Entity to -> DTO
     private Employee mapToDTO(EmployeeEntity entity) {
-        memoryLeakService.createMemoryLeak();
+        memoryLeakService.createMemoryLeaksByStaticCollections();
         return Employee.builder().id(entity.getId())
                 .name(entity.getName())
                 .email(entity.getEmail())

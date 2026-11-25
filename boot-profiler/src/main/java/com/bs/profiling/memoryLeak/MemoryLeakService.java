@@ -1,20 +1,41 @@
 package com.bs.profiling.memoryLeak;
 
+import com.bs.profiling.dto.Employee;
 import org.springframework.stereotype.Component;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class MemoryLeakService {
-    // Static collection: remains reachable for the lifetime of the class and typically the application.
-    private static final List<byte[]> memoryLeakList = new ArrayList<>();//For Memory leak
+    // Static collection/reference: remains reachable for the lifetime of the class and typically the application.
+    private static final List<byte[]> staticCollection = new ArrayList<>();//For Memory leak
+    private static final ThreadLocal<byte[]> THREAD_LOCAL = new ThreadLocal<>();
 
     public MemoryLeakService() {
     }
 
-    public void createMemoryLeak() {
-        System.out.println("Objects retained by memoryLeakList: " + memoryLeakList.size());
-        memoryLeakList.add(new byte[1024 * 1024]); //For creating memory leak: list is static & keeps growing.
+    public void createMemoryLeaksByStaticCollections() {
+        System.out.println("Objects retained by memoryLeakList: " + staticCollection.size());
+        staticCollection.add(new byte[1024 * 1024]); //For creating memory leak: list is static & keeps growing.
+    }
+
+    public void createMemoryLeaksByUnboundedCache() {
+        Map<Long, Employee> cache = new HashMap<>();
+        cache.put(1L, new Employee());
+        System.out.println("Objects retained by cache: " + cache.size());
+    }
+
+    public void createMemoryLeaksByThreadLocal() {
+        THREAD_LOCAL.set(new byte[10 * 1024 * 1024]);
+    }
+
+    public void createMemoryLeaksByUnclosedResources() throws FileNotFoundException {
+        InputStream inputStream = new FileInputStream("data.txt");
     }
 }

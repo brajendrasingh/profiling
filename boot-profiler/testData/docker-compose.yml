@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     ports:
       - "8080:8080"
-      - "127.0.0.1:9010:9010"
+      - "9010:9010"
     mem_limit: 300m
     environment:
       JAVA_TOOL_OPTIONS: >-
@@ -19,9 +19,10 @@ services:
         -Dcom.sun.management.jmxremote
         -Dcom.sun.management.jmxremote.port=9010
         -Dcom.sun.management.jmxremote.rmi.port=9010
+        -Dcom.sun.management.jmxremote.local.only=false
         -Dcom.sun.management.jmxremote.authenticate=false
         -Dcom.sun.management.jmxremote.ssl=false
-        -Djava.rmi.server.hostname=127.0.0.1
+        -Djava.rmi.server.hostname=192.168.0.105
     volumes:
       - ./dumps:/dumps
     networks:
@@ -35,4 +36,5 @@ volumes:
 networks:
   profiler-network:
     external: true
+    name: profiler-network
     
