@@ -1,0 +1,107 @@
+[
+    {
+        "id": "f1a2b3c4d5e6f701",
+        "type": "tab",
+        "label": "Employee API",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "a1b2c3d4e5f60101",
+        "type": "inject",
+        "z": "f1a2b3c4d5e6f701",
+        "name": "Create Random Employee",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 170,
+        "y": 60,
+        "wires": [
+            [
+                "b1c2d3e4f5a60101"
+            ]
+        ]
+    },
+    {
+        "id": "b1c2d3e4f5a60101",
+        "type": "function",
+        "z": "f1a2b3c4d5e6f701",
+        "name": "Add Random Employee",
+        "func": "const firstNames = [\n    \"Rahul\", \"Amit\", \"Priya\", \"Neha\", \"John\",\n    \"David\", \"Ankit\", \"Sneha\", \"Michael\", \"Rohit\",\n    \"Pooja\", \"Vikas\", \"Karan\", \"Riya\", \"Arjun\",\n    \"Sanjay\", \"Kavita\", \"Nikhil\", \"Simran\", \"Raj\"\n];\n\nconst lastNames = [\n    \"Sharma\", \"Verma\", \"Singh\", \"Gupta\", \"Kumar\",\n    \"Patel\", \"Wilson\", \"Brown\", \"Malhotra\", \"Mehta\",\n    \"Agarwal\", \"Yadav\", \"Mishra\", \"Shah\", \"Joshi\"\n];\n\nconst jobTypes = [\n    \"FULL_TIME\",\n    \"PART_TIME\",\n    \"CONTRACT\",\n    \"INTERN\",\n    \"FREELANCE\"\n];\n\nconst designations = [\n    \"Software Engineer\",\n    \"Senior Developer\",\n    \"Project Manager\",\n    \"Business Analyst\",\n    \"HR Manager\",\n    \"Team Lead\",\n    \"QA Engineer\",\n    \"System Administrator\",\n    \"UI UX Designer\",\n    \"DevOps Engineer\",\n    \"Technical Lead\",\n    \"Data Analyst\",\n    \"Product Manager\",\n    \"Network Engineer\"\n];\n\nconst departments = [\n    \"IT\", \"HR\", \"FINANCE\", \"MARKETING\",\n    \"SALES\", \"OPERATIONS\", \"ADMIN\",\n    \"SUPPORT\", \"DEVELOPMENT\", \"TESTING\",\n    \"SECURITY\", \"ENGINEERING\"\n];\n\nconst cities = [\n    \"Kanpur\", \"Delhi\", \"Mumbai\", \"Bangalore\",\n    \"Hyderabad\", \"Chennai\", \"Pune\", \"Lucknow\",\n    \"Noida\", \"Kolkata\", \"Jaipur\", \"Ahmedabad\",\n    \"Indore\", \"Bhopal\", \"Nagpur\", \"Surat\"\n];\n\nconst streets = [\n    \"MG Road\", \"Civil Lines\", \"Park Street\",\n    \"Station Road\", \"Gandhi Nagar\",\n    \"Ashok Nagar\", \"Model Town\",\n    \"Shastri Nagar\", \"Nehru Road\",\n    \"Green Avenue\", \"Lake View Road\"\n];\n\nfunction randomItem(arr) {\n    return arr[Math.floor(Math.random() * arr.length)];\n}\n\nfunction randomNumber(min, max) {\n    return Math.floor(Math.random() * (max - min + 1)) + min;\n}\n\n// Generate employee name\nconst firstName = randomItem(firstNames);\nconst lastName = randomItem(lastNames);\nconst fullName = firstName + \" \" + lastName;\n\nconst email = (firstName + \".\" + lastName + \".\" + Date.now() + \"@sugya.com\").toLowerCase();\n\n// Generate random address\nconst city = randomItem(cities);\nconst street = randomItem(streets);\n\nconst employee = {\n    name: fullName,\n    email: email,\n    jobType: randomItem(jobTypes),\n    designation: randomItem(designations),\n    department: randomItem(departments),\n    salary: randomNumber(10000, 300000),\n    address: {\n        address: randomNumber(1, 999) + \" \" + street + \", \" + city\n    }\n};\n\nmsg.headers = {\n    \"Content-Type\": \"application/json\"\n};\n\nmsg.payload = employee;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 160,
+        "wires": [
+            [
+                "c1d2e3f4a5b60101",
+                "d1e2f3a4b5c60101"
+            ]
+        ]
+    },
+    {
+        "id": "c1d2e3f4a5b60101",
+        "type": "debug",
+        "z": "f1a2b3c4d5e6f701",
+        "name": "Request Payload",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "d1e2f3a4b5c60101",
+        "type": "http request",
+        "z": "f1a2b3c4d5e6f701",
+        "name": "Add Employee",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://host.docker.internal:8080/api/employees",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 580,
+        "y": 200,
+        "wires": [
+            [
+                "e1f2a3b4c5d60101"
+            ]
+        ]
+    },
+    {
+        "id": "e1f2a3b4c5d60101",
+        "type": "debug",
+        "z": "f1a2b3c4d5e6f701",
+        "name": "API Response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 790,
+        "y": 200,
+        "wires": []
+    }
+]
