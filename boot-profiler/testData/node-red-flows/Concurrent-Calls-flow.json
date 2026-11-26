@@ -1,0 +1,100 @@
+[
+    {
+        "id": "8f432fb028bd7e51",
+        "type": "tab",
+        "label": "Concurrent Calls",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b1a336a557e2f739",
+        "type": "inject",
+        "z": "8f432fb028bd7e51",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 100,
+        "y": 80,
+        "wires": [
+            [
+                "e6d5a74f5bc46411"
+            ]
+        ]
+    },
+    {
+        "id": "e6d5a74f5bc46411",
+        "type": "function",
+        "z": "8f432fb028bd7e51",
+        "name": "function",
+        "func": "let count = 10;\n\nlet messages = [];\n\nfor (let i = 0; i < count; i++) {\n    messages.push({payload: i + 1});\n}\n\nreturn [messages];",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 200,
+        "y": 160,
+        "wires": [
+            [
+                "d46362d0208591aa"
+            ]
+        ]
+    },
+    {
+        "id": "d46362d0208591aa",
+        "type": "http request",
+        "z": "8f432fb028bd7e51",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://host.docker.internal:8080/thread/block",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 310,
+        "y": 260,
+        "wires": [
+            [
+                "7716a725b04acff7"
+            ]
+        ]
+    },
+    {
+        "id": "7716a725b04acff7",
+        "type": "debug",
+        "z": "8f432fb028bd7e51",
+        "name": "debug",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 260,
+        "wires": []
+    }
+]

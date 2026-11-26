@@ -2,7 +2,7 @@ package com.bs.profiling.service;
 
 import com.bs.profiling.dto.Employee;
 import com.bs.profiling.entities.EmployeeEntity;
-import com.bs.profiling.memoryLeak.MemoryLeakService;
+import com.bs.profiling.jvmissues.MemoryLeakService;
 import com.bs.profiling.repository.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

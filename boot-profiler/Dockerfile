@@ -33,10 +33,10 @@ FROM eclipse-temurin:27-jdk
 WORKDIR /app
 
 # Copy generated Spring Boot JAR
-COPY --from=builder /app/build/libs/*.jar app.jar
+COPY --from=builder /app/build/libs/*.jar boot-profiler.jar
 
 # Spring Boot default port
 EXPOSE 8080
 
 # Start application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "boot-profiler.jar"]

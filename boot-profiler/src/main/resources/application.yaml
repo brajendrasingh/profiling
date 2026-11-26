@@ -2,6 +2,11 @@ server:
   servlet:
     context-path: /
   port: 8080
+  # Restrict Tomcat thread pool for easier reproduction of thread issues like blockage
+  tomcat:
+    threads:
+      max: 10
+      min-spare: 2
 
 spring:
   application:
@@ -21,3 +26,10 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: false
+
+#For capturing thread dumps & heapdump
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,threaddump,heapdump

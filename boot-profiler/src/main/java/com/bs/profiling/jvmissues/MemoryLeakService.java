@@ -1,4 +1,4 @@
-package com.bs.profiling.memoryLeak;
+package com.bs.profiling.jvmissues;
 
 import com.bs.profiling.dto.Employee;
 import org.springframework.stereotype.Component;
@@ -35,6 +35,7 @@ public class MemoryLeakService {
         THREAD_LOCAL.set(new byte[10 * 1024 * 1024]);
     }
 
+    //Like files or db connections
     public void createMemoryLeaksByUnclosedResources() throws FileNotFoundException {
         InputStream inputStream = new FileInputStream("data.txt");
     }
