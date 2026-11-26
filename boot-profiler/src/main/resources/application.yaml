@@ -29,6 +29,9 @@ spring:
 
 #For capturing thread dumps & heapdump
 management:
+  endpoint:
+    heapdump:
+      access: read-only
   endpoints:
     web:
       exposure:

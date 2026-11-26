@@ -11,7 +11,7 @@
         "id": "b1a336a557e2f739",
         "type": "inject",
         "z": "8f432fb028bd7e51",
-        "name": "",
+        "name": "Inject Node",
         "props": [
             {
                 "p": "payload"

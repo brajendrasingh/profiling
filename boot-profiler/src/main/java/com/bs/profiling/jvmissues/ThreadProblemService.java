@@ -10,7 +10,7 @@ public class ThreadProblemService {
 
     public String threadBlockage() throws InterruptedException {
         System.out.println("Request started: " + Thread.currentThread().getName());
-        Thread.sleep(120_000);
+        Thread.sleep(120_000);//2 Minutes
         return "Request completed";
     }
 

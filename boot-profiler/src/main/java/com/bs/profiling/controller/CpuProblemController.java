@@ -8,10 +8,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/cpu")
 public class CpuProblemController {
 
+    private volatile long counter;
+
     @GetMapping("/loop")
     public String highCpuDueToInfiniteLoops() {
-
-        return "Success";
+        long endTime = System.currentTimeMillis() + 60_000; // 60 seconds
+        while (System.currentTimeMillis() < endTime) {
+            counter++;
+        }
+        return "CPU load generated for 10 seconds. Counter: " + counter;
     }
 
     @GetMapping("/tomanythread")
